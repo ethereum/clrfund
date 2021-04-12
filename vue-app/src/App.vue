@@ -65,7 +65,7 @@ export default class App extends Vue {
 
   get isSidebarCollapsed(): boolean {
     const routes = ['landing', 'projectAdded', 'join', 'joinStep']
-    return routes.includes(this.$route.name)
+    return routes.includes(this.$route.name || '')
   }
 }
 </script>
