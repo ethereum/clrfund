@@ -168,7 +168,7 @@ ol li {
   margin: 0 0 2rem 0;
   counter-increment: li-counter;
   position: relative;
-  max-width: calc(100vw - (2 * $content-space));
+  /* max-width: calc(100vw - (2 * $content-space)); */
 }
 ol li::before {
   content: counter(li-counter); 
