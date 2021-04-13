@@ -24,9 +24,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Watch } from 'vue-property-decorator'
-
-import { recipientRegistryType } from '@/api/core'
 // import Cart from '@/components/Cart.vue'
 // import Profile from '@/components/Profile.vue'
 import RoundInformation from '@/views/RoundInformation.vue'
@@ -35,17 +32,6 @@ import NavBar from '@/components/NavBar.vue'
 import { LOAD_USER_INFO, LOAD_ROUND_INFO } from '@/store/action-types'
 
 @Component({
-  name: 'clr.fund',
-  metaInfo: {
-    title: 'clr.fund',
-    titleTemplate: 'clr.fund - %s',
-    meta: [
-      {
-        name: 'git-commit',
-        content: process.env.VUE_APP_GIT_COMMIT || '',
-      },
-    ],
-  },
   components: { RoundInformation, NavBar },
 })
 export default class App extends Vue {

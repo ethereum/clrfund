@@ -7,6 +7,24 @@ import '@nomiclabs/hardhat-ganache'
 
 const GAS_LIMIT = 10000000
 
+// Go to https://www.alchemyapi.io, sign up, create
+// a new App in its dashboard, and replace "KEY" with its key
+// const ALCHEMY_API_KEY = 'KEY';
+
+// Replace this private key with your Ropsten account private key
+// To export your private key from Metamask, open Metamask and
+// go to Account Details > Export Private Key
+// Be aware of NEVER putting real Ether into testing accounts
+// const ROPSTEN_PRIVATE_KEY = 'YOUR ROPSTEN PRIVATE KEY';
+
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+console.log('CONFIG!')
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+console.log(process.env.ETHEREUM_JSONRPC_HTTP_URL)
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+const ETHEREUM_JSONRPC_HTTP_URL='https://eth-rinkeby.alchemyapi.io/v2/YVk23ENW37Ef61QuVLU38MxI1iiytF1i'
+const ROPSTEN_PRIVATE_KEY='67fba809bdd552c63d299681fdde57c2e435e4795a5da6e55d7cb244098c37d2'
+
 const config: HardhatUserConfig = {
   networks: {
     hardhat: {
@@ -14,7 +32,7 @@ const config: HardhatUserConfig = {
       blockGasLimit: GAS_LIMIT,
     },
     localhost: {
-      url: "http://127.0.0.1:18545"
+      url: 'http://127.0.0.1:18545',
     },
     ganache: {
       // Workaround for https://github.com/nomiclabs/hardhat/issues/518
@@ -22,8 +40,8 @@ const config: HardhatUserConfig = {
       gasLimit: GAS_LIMIT,
     } as any,
     rinkeby: {
-      url: process.env.ETHEREUM_JSONRPC_HTTP_URL || 'http://127.0.0.1:8545',
-      accounts: { mnemonic: '' },
+      url: ETHEREUM_JSONRPC_HTTP_URL,
+      accounts: [`0x${ROPSTEN_PRIVATE_KEY}`],
     },
     xdai: {
       url: 'https://rpc.xdaichain.com',
@@ -32,11 +50,11 @@ const config: HardhatUserConfig = {
     },
   },
   paths: {
-    artifacts: "build/contracts",
-    tests: "tests"
+    artifacts: 'build/contracts',
+    tests: 'tests',
   },
   solidity: {
-    version: "0.6.12",
+    version: '0.6.12',
     settings: {
       optimizer: {
         enabled: true,

@@ -8,6 +8,8 @@
     "node": "hardhat node --port 18545",
     "deploy:local": "yarn clean && yarn build && hardhat run --network localhost scripts/deploy.ts",
     "deployTestRound:local": "hardhat run --network localhost scripts/deployTestRound.ts",
+    "deploy:rinkeby": "yarn clean && yarn build && hardhat run --network rinkeby scripts/deploy.ts",
+    "deployTestRound:rinkeby": "hardhat run --network rinkeby scripts/deployTestRound.ts",
     "contribute:local": "hardhat run --network localhost scripts/contribute.ts",
     "vote:local": "hardhat run --network localhost scripts/vote.ts",
     "tally:local": "hardhat run --network localhost scripts/tally.ts",
