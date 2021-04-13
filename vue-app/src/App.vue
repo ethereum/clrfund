@@ -20,21 +20,21 @@ import Component from 'vue-class-component'
 import RoundInformation from '@/views/RoundInformation.vue'
 import NavBar from '@/components/NavBar.vue'
 
-// import { LOAD_USER_INFO, LOAD_ROUND_INFO } from '@/store/action-types'
+import { LOAD_USER_INFO, LOAD_ROUND_INFO } from '@/store/action-types'
 
 @Component({
   components: { RoundInformation, NavBar },
 })
 export default class App extends Vue {
-  // created() {
-  //   // TODO clearInterval on unmount
-  //   setInterval(() => {
-  //     this.$store.dispatch(LOAD_ROUND_INFO)
-  //   }, 60 * 1000)
-  //   setInterval(() => {
-  //     this.$store.dispatch(LOAD_USER_INFO)
-  //   }, 60 * 1000)
-  // }
+  created() {
+    // TODO clearInterval on unmount
+    setInterval(() => {
+      this.$store.dispatch(LOAD_ROUND_INFO)
+    }, 60 * 1000)
+    setInterval(() => {
+      this.$store.dispatch(LOAD_USER_INFO)
+    }, 60 * 1000)
+  }
 
   get isInApp(): boolean {
     return this.$route.name !== 'landing'
