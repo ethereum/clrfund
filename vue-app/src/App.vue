@@ -2,17 +2,8 @@
   <div id="app">
     <nav-bar :in-app="isInApp" />
     <div id="content-container">
-      <div id="sidebar" :class="{ hidden: isSidebarCollapsed}">
+      <div id="sidebar" v-if="!isSidebarCollapsed">
           <round-information />
-          <!-- <router-link to="/">Home</router-link>
-          <router-link to="/projects">Projects</router-link>
-          <router-link to="/rounds">Rounds</router-link>
-          <router-link to="/recipients" v-if="hasRecipientRegistryLink()">Registry</router-link>
-          <router-link to="/about">About</router-link>
-          <router-link to="/join">Apply</router-link>
-          <a href="https://blog.clr.fund" target=_blank>Blog</a>
-          <a href="https://forum.clr.fund" target=_blank>Forum</a>
-          <a href="https://github.com/clrfund/monorepo/" target="_blank" rel="noopener">GitHub</a> -->
       </div>
       <div id="content" :class="{ padded: !isSidebarCollapsed }">
         <router-view :key="$route.path" />
@@ -29,21 +20,21 @@ import Component from 'vue-class-component'
 import RoundInformation from '@/views/RoundInformation.vue'
 import NavBar from '@/components/NavBar.vue'
 
-import { LOAD_USER_INFO, LOAD_ROUND_INFO } from '@/store/action-types'
+// import { LOAD_USER_INFO, LOAD_ROUND_INFO } from '@/store/action-types'
 
 @Component({
   components: { RoundInformation, NavBar },
 })
 export default class App extends Vue {
-  created() {
-    // TODO clearInterval on unmount
-    setInterval(() => {
-      this.$store.dispatch(LOAD_ROUND_INFO)
-    }, 60 * 1000)
-    setInterval(() => {
-      this.$store.dispatch(LOAD_USER_INFO)
-    }, 60 * 1000)
-  }
+  // created() {
+  //   // TODO clearInterval on unmount
+  //   setInterval(() => {
+  //     this.$store.dispatch(LOAD_ROUND_INFO)
+  //   }, 60 * 1000)
+  //   setInterval(() => {
+  //     this.$store.dispatch(LOAD_USER_INFO)
+  //   }, 60 * 1000)
+  // }
 
   get isInApp(): boolean {
     return this.$route.name !== 'landing'
