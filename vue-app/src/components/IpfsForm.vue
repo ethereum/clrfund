@@ -11,11 +11,11 @@
         name="image"
       />
       <button primary="true" type='submit' label='Upload' class="btn-primary" :class="{disabled: loading || error || !document}">
-        {{ loading ? "Loading..." : "Upload"}}
+        {{ loading ? "Uploading..." : "Upload"}}
       </button>
     </div>
+    <loader v-if="loading" />
     <div class="image-preview">
-      <loader v-if="loading" />
       <img
         v-if="data"
         :src="data"
@@ -24,10 +24,20 @@
           'image-preview': data,
         }"
       />
-      <p v-if="data" @click="copyHash" class="copy">IPFS hash: {{ hash }} 📋</p>
-      <p v-if="error" class="error">{{ error }}</p>
+      <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+        <div v-if="data" @click="handleRemoveImage" class="btn-white small">Remove image</div>
+      </div>  
     </div>
-    <div @click="handleRemoveImage" class="btn-white small">Clear</div>
+    <div v-if="data" @click="copyHash" class="copy">
+      <div class="label">
+        IPFS hash <img width="16px" src="@/assets/info.svg" />
+      </div>
+      <div class="hash">
+        <!-- {{ copied ? --> {{ hash }} <!-- : "Copied!"}} -->
+        <img width="16px" src="@/assets/copy.svg" />
+      </div>
+    </div>
+    <p v-if="error" class="error">{{ error }}</p>
   </form>
 </template>
 
@@ -127,8 +137,23 @@ export default class IpfsForm extends Vue {
 @import "../styles/theme";
 
 .image-preview {
-  width: 500px;
+  width: 100%;
   height: auto;
+  display: flex;
+  align-items: center;
+  background: $bg-secondary-color;
+  box-shadow: $box-shadow;
+  border-radius: 8px;
+  @media (max-width: $breakpoint-m) {
+    flex-direction: column;
+  }
+}
+
+.image-preview img {
+  width: 50%;
+  @media (max-width: $breakpoint-m) {
+    width: 100%;
+  }
 }
 
 .disabled {
@@ -143,7 +168,12 @@ export default class IpfsForm extends Vue {
 }
 
 .btn-white.small {
-  max-width: calc(5ch + 4rem);
+/*   max-width: calc(5ch + 4rem); */
+color: $error-color;
+border: 2px solid $error-color;
+@media (max-width: $breakpoint-m) {
+    margin: 1rem;
+  }
 }
 
 .input-row {
@@ -161,6 +191,65 @@ export default class IpfsForm extends Vue {
 }
 
 .copy {
+  border: 1px solid #fff;
+  border-radius: 0.5rem;
+  background: $bg-secondary-color;
+  margin-top: 2rem;
+  display: flex;
+  width: fit-content;
   cursor: pointer;
+  &:hover {
+    background: $bg-light-color;
+  }
+  @media (max-width: $breakpoint-m) {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+
+.label {
+  background: $bg-primary-color;
+  padding: 0.5rem;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-family: "Glacial Indifference", sans-serif;
+  border-radius: 0.5rem 0 0 0.5rem;
+  border-right: 1px solid #fff;
+  line-height: 150%;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  @media (max-width: $breakpoint-m) {
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-right: 0;
+  }
+}
+
+.label img {
+  padding: 0.25rem;
+  border-radius: 4px;
+  &:hover {
+    background: $bg-light-color;
+  }
+}
+
+.hash {
+  padding: 0.5rem;
+  font-family: monospace;
+  line-height: 150%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hash img {
+  padding: 0.25rem;
+  border-radius: 4px;
+  &:hover {
+    background: $bg-primary-color;
+  }
+}
+
 }
 </style>
