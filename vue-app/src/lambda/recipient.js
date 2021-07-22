@@ -38,6 +38,16 @@ function recipientToRow(recipient) {
 }
 
 exports.handler = async function (event) {
+  const host = event.headers.host
+  if (process.env.CONTEXT !== 'dev') {
+    const whitelist = JSON.parse(process.env.LAMBDA_DOMAIN_WHITELIST)
+    if (!whitelist.includes(host)) {
+      return {
+        statusCode: 403,
+      }
+    }
+  }
+
   if (!event.body) {
     return {
       statusCode: 400, // Bad request
