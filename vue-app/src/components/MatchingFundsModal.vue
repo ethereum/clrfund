@@ -2,11 +2,20 @@
   <div class="modal-body">
     <div v-if="step === 1">
       <div v-if="!currentUser">
-        <h3>Connect your wallet</h3>
+        <div class="top">
+          <h3>Connect your wallet</h3>
+          <img
+            class="pointer"
+            src="@/assets/close.svg"
+            @click="$emit('close')"
+          />
+        </div>
         <div style="margin-bottom: 2rem">
           You must connect to add to the matching pool.
         </div>
-        <wallet-widget />
+        <div class="wallet-container">
+          <wallet-widget />
+        </div>
       </div>
       <div v-else>
         <h3>
@@ -172,6 +181,18 @@ export default class MatchingFundsModal extends Vue {
   input {
     width: 100%;
   }
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $modal-space;
+}
+
+.wallet-container {
+  display: flex;
+  justify-content: center;
 }
 
 .btn-row {
