@@ -110,7 +110,7 @@ window.onclick = function (event) {
 #nav-bar {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   padding: 0 1.5rem;
   height: 64px;
