@@ -112,6 +112,7 @@ export default class TransactionSuccess extends Vue {
   width: 100%;
   display: flex;
   justify-content: center;
+  opacity:0.8;
 }
 
 .image-wrapper .docking {
