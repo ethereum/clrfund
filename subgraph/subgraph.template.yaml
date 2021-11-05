@@ -51,6 +51,7 @@ dataSources:
     name: OptimisticRecipientRegistry
     network: {{network}}
     source:
+      address: '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318'
       abi: OptimisticRecipientRegistry
       startBlock: {{recipientRegistryStartBlock}}
     mapping:
