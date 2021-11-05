@@ -2360,7 +2360,9 @@ export type GetRecipientsQueryVariables = Exact<{
 
 export type GetRecipientsQuery = { __typename?: 'Query', recipients: Array<{ __typename?: 'Recipient', id: string, recipientIndex: Maybe<any>, requestType: Maybe<string>, requester: Maybe<string>, recipientAddress: Maybe<any>, recipientMetadata: Maybe<string>, requestSubmittedHash: Maybe<any>, requestResolvedHash: Maybe<any>, submissionTime: Maybe<string>, rejected: Maybe<boolean>, verified: Maybe<boolean> }> };
 
-export type GetRoundsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetRoundsQueryVariables = Exact<{
+  factoryAddress: Scalars['String'];
+}>;
 
 
 export type GetRoundsQuery = { __typename?: 'Query', fundingRounds: Array<{ __typename?: 'FundingRound', id: string }> };
@@ -2454,8 +2456,8 @@ export const GetRecipientsDocument = gql`
 }
     `;
 export const GetRoundsDocument = gql`
-    query GetRounds {
-  fundingRounds {
+    query GetRounds($factoryAddress: String!) {
+  fundingRounds(where: {fundingRoundFactory: $factoryAddress}) {
     id
   }
 }
@@ -2498,7 +2500,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     GetRecipients(variables: GetRecipientsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetRecipientsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetRecipientsQuery>(GetRecipientsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetRecipients');
     },
-    GetRounds(variables?: GetRoundsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetRoundsQuery> {
+    GetRounds(variables: GetRoundsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetRoundsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetRoundsQuery>(GetRoundsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetRounds');
     },
     GetTotalContributed(variables: GetTotalContributedQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetTotalContributedQuery> {

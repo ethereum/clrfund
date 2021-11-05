@@ -33,6 +33,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { FixedNumber } from 'ethers'
 
 import { Project, getProject } from '@/api/projects'
@@ -68,9 +69,23 @@ export default class ProjectView extends Vue {
     return markdown.render(this.project?.description || '')
   }
 
-  async created() {
+  get recipientRegistryAddress(): string {
+    return this.$store.state.recipientRegistryAddress
+  }
+
+  created() {
+    this.loadProject()
+  }
+
+  @Watch('recipientRegistryAddress')
+  async loadProject() {
+    if (!this.recipientRegistryAddress) {
+      return
+    }
+
+    this.isLoading = true
     const project = await getProject(
-      this.$store.state.recipientRegistryAddress,
+      this.recipientRegistryAddress,
       this.$route.params.id
     )
     if (project === null || project.isHidden) {

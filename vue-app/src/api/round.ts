@@ -1,9 +1,9 @@
-import { BigNumber, Contract, FixedNumber } from 'ethers'
+import { BigNumber, Contract, ethers, FixedNumber } from 'ethers'
 import { DateTime } from 'luxon'
 import { PubKey } from 'maci-domainobjs'
 
-import { FundingRound, MACI, ERC20 } from './abi'
-import { provider, factory } from './core'
+import { FundingRound, MACI, ERC20, FundingRoundFactory } from './abi'
+import { provider } from './core'
 import { getTotalContributed } from './contributions'
 
 export interface RoundInfo {
@@ -44,8 +44,15 @@ export enum RoundStatus {
   Finalized = 'Finalized',
   Cancelled = 'Cancelled',
 }
-//TODO: update to take factory address as a parameter, default to env. variable
-export async function getCurrentRound(): Promise<string | null> {
+
+export async function getCurrentRound(
+  factoryAddress: string
+): Promise<string | null> {
+  const factory = new ethers.Contract(
+    factoryAddress,
+    FundingRoundFactory,
+    provider
+  )
   const fundingRoundAddress = await factory.getCurrentRound()
   if (fundingRoundAddress === '0x0000000000000000000000000000000000000000') {
     return null
@@ -53,10 +60,15 @@ export async function getCurrentRound(): Promise<string | null> {
   return fundingRoundAddress.toLowerCase()
 }
 
-//TODO: update to take factory address as a parameter, default to env. variable
 export async function getRoundInfo(
+  factoryAddress: string,
   fundingRoundAddress: string
 ): Promise<RoundInfo> {
+  const factory = new ethers.Contract(
+    factoryAddress,
+    FundingRoundFactory,
+    provider
+  )
   const fundingRound = new Contract(fundingRoundAddress, FundingRound, provider)
   const [
     maciAddress,
@@ -138,7 +150,6 @@ export async function getRoundInfo(
       status = RoundStatus.Tallying
     }
     contributions = contributionsInfo.amount
-    //TODO: update to take factory address as a parameter, default to env. variable
     matchingPool = await factory.getMatchingFunds(nativeTokenAddress)
   }
 

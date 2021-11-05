@@ -163,7 +163,8 @@ export default class JoinLanding extends Vue {
   showCriteriaPanel = false
 
   async created() {
-    this.currentRound = await getCurrentRound()
+    const currentFactoryAddress = this.$store.state.currentFactoryAddress
+    this.currentRound = await getCurrentRound(currentFactoryAddress)
     this.loading = false
   }
 

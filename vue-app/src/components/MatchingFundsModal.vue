@@ -75,7 +75,6 @@ import { formatUnits } from '@ethersproject/units'
 
 import { User } from '@/api/user'
 import { ERC20 } from '@/api/abi'
-import { factory } from '@/api/core'
 import { RoundStatus } from '@/api/round'
 
 @Component({
@@ -158,14 +157,14 @@ export default class MatchingFundsModal extends Vue {
   async contributeMatchingFunds() {
     this.step += 1
     this.signer = this.$store.state.currentUser.walletProvider.getSigner()
+    const currentFactoryAddress = this.$store.state.currentFactoryAddress
     const { nativeTokenAddress, nativeTokenDecimals } =
       this.$store.state.currentRound
     const token = new Contract(nativeTokenAddress, ERC20, this.signer)
     const amount = parseFixed(this.amount, nativeTokenDecimals)
     try {
       await waitForTransaction(
-        //TODO: update to take factory address as a parameter from the route props, default to env. variable
-        token.transfer(factory.address, amount),
+        token.transfer(currentFactoryAddress, amount),
         (hash) => (this.transferTxHash = hash)
       )
     } catch (error) {

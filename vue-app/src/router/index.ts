@@ -25,207 +25,213 @@ import VerifyView from '../views/Verify.vue'
 import RecipientRegistryView from '@/views/RecipientRegistry.vue'
 import CartView from '@/views/Cart.vue'
 import TransactionSuccess from '@/views/TransactionSuccess.vue'
+import FactoryRound from '@/views/FactoryRound.vue'
 import Round from '@/views/Round.vue'
 
 Vue.use(VueRouter)
 
-//TODO: create a new route that kaes funding factory address as a param
 const routes = [
   {
-    path: '/',
-    name: 'landing',
-    component: Landing,
-    meta: {
-      title: 'Clr.fund',
-    },
-  },
-  {
-    path: '/round/:roundIndex?',
-    component: Round,
-    meta: {
-      title: 'Round',
-    },
+    path: '/:factoryAddress(0x[a-fA-F0-9]{40})?',
+    component: FactoryRound,
     children: [
       {
         path: '',
-        name: 'round',
-        component: ProjectList,
+        name: 'landing',
+        component: Landing,
         meta: {
-          title: 'Project List',
+          title: 'Clr.fund',
         },
       },
       {
-        path: 'project/:id',
-        name: 'project',
-        component: ProjectView,
+        path: 'round/:roundIndex?',
+        component: Round,
+        meta: {
+          title: 'Round',
+        },
+        children: [
+          {
+            path: '',
+            name: 'round',
+            component: ProjectList,
+            meta: {
+              title: 'Project List',
+            },
+          },
+          {
+            path: 'project/:id',
+            name: 'project',
+            component: ProjectView,
+          },
+        ],
+      },
+      {
+        path: 'round-information',
+        name: 'round-information',
+        component: RoundInformation,
+        meta: {
+          title: 'Round Information',
+        },
+      },
+      {
+        path: 'rounds',
+        name: 'rounds',
+        component: RoundList,
+        meta: {
+          title: 'Rounds',
+        },
+      },
+      {
+        path: 'about',
+        name: 'about',
+        component: About,
+        meta: {
+          title: 'About',
+        },
+      },
+      {
+        path: 'about/maci',
+        name: 'about-maci',
+        component: AboutMaci,
+        meta: {
+          title: 'About MACI',
+        },
+      },
+      {
+        path: 'about/sybil-resistance',
+        name: 'about-sybil-resistance',
+        component: AboutSybilResistance,
+        meta: {
+          title: 'About Sybil Resistance',
+        },
+      },
+      {
+        path: 'about/layer-2',
+        name: 'about-layer-2',
+        component: AboutLayer2,
+        meta: {
+          title: 'About Layer 2',
+        },
+      },
+      {
+        path: 'about/how-it-works',
+        name: 'about-how-it-works',
+        component: AboutHowItWorks,
+        meta: {
+          title: 'How it works',
+        },
+      },
+      {
+        path: 'about/how-it-works/contributors',
+        name: 'about-how-it-works-contributors',
+        component: AboutContributors,
+        meta: {
+          title: 'Contributors Guide',
+        },
+      },
+      {
+        path: 'about/how-it-works/recipients',
+        name: 'about-how-it-works-recipients',
+        component: AboutRecipients,
+        meta: {
+          title: 'Recipients Guide',
+        },
+      },
+      {
+        path: 'about/public-goods',
+        name: 'about-public-goods',
+        component: AboutPublicGoods,
+        meta: {
+          title: 'About public goods',
+        },
+      },
+      {
+        path: 'about/quadratic-funding',
+        name: 'about-quadratic-funding',
+        component: AboutQuadraticFunding,
+        meta: {
+          title: 'About quadratic funding',
+        },
+      },
+      {
+        path: 'about/decentralization',
+        name: 'about-decentralization',
+        component: AboutDecentralization,
+        meta: {
+          title: 'About decentralization',
+        },
+      },
+      {
+        path: 'recipients',
+        name: 'recipients',
+        component: RecipientRegistryView,
+        meta: {
+          title: 'Recipient registry',
+        },
+      },
+      {
+        path: 'verify',
+        name: 'verify',
+        component: VerifyLanding,
+        meta: {
+          title: 'BrightID Verify Landing',
+        },
+      },
+      {
+        path: 'verify/success/:hash?',
+        name: 'verified',
+        component: Verified,
+        meta: {
+          title: 'Verified',
+        },
+      },
+      {
+        path: 'verify/:step',
+        name: 'verify-step',
+        component: VerifyView,
+        meta: {
+          title: 'Verification Steps',
+        },
+      },
+      {
+        path: 'join',
+        name: 'join',
+        component: JoinLanding,
+        meta: {
+          title: 'Recipient Join Form Landing',
+        },
+      },
+      {
+        path: 'join/success/:hash',
+        name: 'project-added',
+        component: ProjectAdded,
+        meta: {
+          title: 'Recipient Join Form Success',
+        },
+      },
+      {
+        path: 'join/:step',
+        name: 'join-step',
+        component: JoinView,
+        meta: {
+          title: 'Recipient Join Form Steps',
+        },
+      },
+
+      {
+        path: 'cart',
+        name: 'cart',
+        component: CartView,
+        meta: {
+          title: 'Cart',
+        },
+      },
+      {
+        path: 'transaction-success/:type/:hash?',
+        name: 'transaction-success',
+        component: TransactionSuccess,
       },
     ],
-  },
-  {
-    path: '/round-information',
-    name: 'round-information',
-    component: RoundInformation,
-    meta: {
-      title: 'Round Information',
-    },
-  },
-  {
-    path: '/rounds',
-    name: 'rounds',
-    component: RoundList,
-    meta: {
-      title: 'Rounds',
-    },
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: About,
-    meta: {
-      title: 'About',
-    },
-  },
-  {
-    path: '/about/maci',
-    name: 'about-maci',
-    component: AboutMaci,
-    meta: {
-      title: 'About MACI',
-    },
-  },
-  {
-    path: '/about/sybil-resistance',
-    name: 'about-sybil-resistance',
-    component: AboutSybilResistance,
-    meta: {
-      title: 'About Sybil Resistance',
-    },
-  },
-  {
-    path: '/about/layer-2',
-    name: 'about-layer-2',
-    component: AboutLayer2,
-    meta: {
-      title: 'About Layer 2',
-    },
-  },
-  {
-    path: '/about/how-it-works',
-    name: 'about-how-it-works',
-    component: AboutHowItWorks,
-    meta: {
-      title: 'How it works',
-    },
-  },
-  {
-    path: '/about/how-it-works/contributors',
-    name: 'about-how-it-works-contributors',
-    component: AboutContributors,
-    meta: {
-      title: 'Contributors Guide',
-    },
-  },
-  {
-    path: '/about/how-it-works/recipients',
-    name: 'about-how-it-works-recipients',
-    component: AboutRecipients,
-    meta: {
-      title: 'Recipients Guide',
-    },
-  },
-  {
-    path: '/about/public-goods',
-    name: 'about-public-goods',
-    component: AboutPublicGoods,
-    meta: {
-      title: 'About public goods',
-    },
-  },
-  {
-    path: '/about/quadratic-funding',
-    name: 'about-quadratic-funding',
-    component: AboutQuadraticFunding,
-    meta: {
-      title: 'About quadratic funding',
-    },
-  },
-  {
-    path: '/about/decentralization',
-    name: 'about-decentralization',
-    component: AboutDecentralization,
-    meta: {
-      title: 'About decentralization',
-    },
-  },
-  {
-    path: '/recipients',
-    name: 'recipients',
-    component: RecipientRegistryView,
-    meta: {
-      title: 'Recipient registry',
-    },
-  },
-  {
-    path: '/verify',
-    name: 'verify',
-    component: VerifyLanding,
-    meta: {
-      title: 'BrightID Verify Landing',
-    },
-  },
-  {
-    path: '/verify/success/:hash?',
-    name: 'verified',
-    component: Verified,
-    meta: {
-      title: 'Verified',
-    },
-  },
-  {
-    path: '/verify/:step',
-    name: 'verify-step',
-    component: VerifyView,
-    meta: {
-      title: 'Verification Steps',
-    },
-  },
-  {
-    path: '/join',
-    name: 'join',
-    component: JoinLanding,
-    meta: {
-      title: 'Recipient Join Form Landing',
-    },
-  },
-  {
-    path: '/join/success/:hash',
-    name: 'project-added',
-    component: ProjectAdded,
-    meta: {
-      title: 'Recipient Join Form Success',
-    },
-  },
-  {
-    path: '/join/:step',
-    name: 'join-step',
-    component: JoinView,
-    meta: {
-      title: 'Recipient Join Form Steps',
-    },
-  },
-
-  {
-    path: '/cart',
-    name: 'cart',
-    component: CartView,
-    meta: {
-      title: 'Cart',
-    },
-  },
-  {
-    path: '/transaction-success/:type/:hash?',
-    name: 'transaction-success',
-    component: TransactionSuccess,
   },
 ]
 const router = new VueRouter({

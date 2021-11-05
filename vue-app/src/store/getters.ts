@@ -27,6 +27,7 @@ export interface RootState {
   activeRoundAddress: string | null
   currentRound: RoundInfo | null
   currentRoundAddress: string | null
+  currentFactoryAddress: string | null
   currentUser: User | null
   recipient: RecipientApplicationData | null
   recipientRegistryAddress: string | null

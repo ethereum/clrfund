@@ -53,6 +53,7 @@ import {
   SET_RECIPIENT_REGISTRY_ADDRESS,
   SET_RECIPIENT_REGISTRY_INFO,
   SET_HAS_VOTED,
+  SET_CURRENT_FACTORY_ADDRESS,
 } from './mutation-types'
 
 // Utils
@@ -61,8 +62,16 @@ import { UserRegistryType, userRegistryType } from '@/api/core'
 import { BrightId, getBrightId } from '@/api/bright-id'
 
 const actions = {
-  //TODO: also commit SET_CURRENT_FACTORY_ADDRESS on this action, should be passed optionally and default to env variable
-  [SELECT_ROUND]({ commit, dispatch, state }, roundAddress: string) {
+  [SELECT_ROUND](
+    { commit, dispatch, state },
+    {
+      roundIndex,
+      factoryAddress,
+    }: {
+      roundIndex: string
+      factoryAddress?: string
+    }
+  ) {
     if (state.currentRoundAddress) {
       // Reset everything that depends on round
       dispatch(UNWATCH_CART)
@@ -74,16 +83,17 @@ const actions = {
       commit(SET_RECIPIENT_REGISTRY_INFO, null)
       commit(SET_CURRENT_ROUND, null)
     }
-    commit(SET_CURRENT_ROUND_ADDRESS, roundAddress)
+    commit(SET_CURRENT_FACTORY_ADDRESS, factoryAddress)
+    commit(SET_CURRENT_ROUND_ADDRESS, roundIndex)
   },
   async [LOAD_ROUND_INFO]({ commit, state }) {
+    const currentFactoryAddress = state.currentFactoryAddress
     const roundAddress = state.currentRoundAddress
     if (roundAddress === null) {
       commit(SET_CURRENT_ROUND, null)
       return
     }
-    //TODO: update to take factory address as a parameter, default to env. variable
-    const round = await getRoundInfo(roundAddress)
+    const round = await getRoundInfo(currentFactoryAddress, roundAddress)
     commit(SET_CURRENT_ROUND, round)
     if (round && round.status === RoundStatus.Finalized) {
       // The tally fetch from ipfs can take long. Do not `await` for it
@@ -93,10 +103,13 @@ const actions = {
     }
   },
   async [LOAD_RECIPIENT_REGISTRY_INFO]({ commit, state }) {
-    //TODO: update call to getRecipientRegistryAddress to take factory address as a parameter
+    const currentFactoryAddress = state.currentFactoryAddress
     const recipientRegistryAddress =
       state.recipientRegistryAddress ||
-      (await getRecipientRegistryAddress(state.currentRoundAddress))
+      (await getRecipientRegistryAddress(
+        currentFactoryAddress,
+        state.currentRoundAddress
+      ))
     commit(SET_RECIPIENT_REGISTRY_ADDRESS, recipientRegistryAddress)
 
     if (recipientRegistryAddress) {

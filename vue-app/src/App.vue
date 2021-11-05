@@ -89,16 +89,26 @@ export default class App extends Vue {
   pollingInterval
 
   async created(): Promise<void> {
+    const factoryAddress =
+      this.$route.params.factoryAddress ||
+      process.env.VUE_APP_CLRFUND_FACTORY_ADDRESS
     const roundIndex = this.$route.params.roundIndex
+
+    if (!factoryAddress) {
+      throw new Error('No factory address found')
+    }
 
     // Always fetch the current round and store it. We use it to compare with the
     // current round that the user might select manually and display a warning
     // message describing that an old round is being displayed.
-    const currentRoundAddress = await getCurrentRound()
+    const currentRoundAddress = await getCurrentRound(factoryAddress)
     await this.$store.commit(SET_ACTIVE_ROUND_ADDRESS, currentRoundAddress)
 
-    // Set the `currentRound`
-    await this.$store.dispatch(SELECT_ROUND, roundIndex || currentRoundAddress)
+    // Set the `currentRound` and `factoryAddress`
+    await this.$store.dispatch(SELECT_ROUND, {
+      roundIndex: roundIndex || currentRoundAddress,
+      factoryAddress,
+    })
 
     // Execute and start polling round information every 1 min
     this.loadRound()
@@ -113,32 +123,27 @@ export default class App extends Vue {
 
   @Watch('$route.params')
   async verifyLoadRound() {
+    const { currentRoundAddress, activeRoundAddress, currentFactoryAddress } =
+      this.$store.state
+    const factoryAddress = this.$route.params.factoryAddress
     const roundIndex = this.$route.params.roundIndex
-    const { currentRoundAddress, activeRoundAddress } = this.$store.state
 
-    if (roundIndex && roundIndex !== currentRoundAddress) {
-      // If it is an old round, toggle the cart off
-      if (roundIndex !== activeRoundAddress) {
-        this.$store.commit(TOGGLE_SHOW_CART_PANEL, false)
-      }
-
-      // In case we navigate to a different round, load everything again
-      await this.$store.dispatch(SELECT_ROUND, roundIndex)
-      await this.loadRound()
-      await this.loginUser()
+    if (
+      currentFactoryAddress === factoryAddress &&
+      roundIndex === currentRoundAddress
+    ) {
+      return
     }
 
-    // Special case for when we transition from an old round to `/round` (that
-    // loads the active round automatically)
-    if (!roundIndex && activeRoundAddress !== currentRoundAddress) {
-      await this.$store.dispatch(SELECT_ROUND, activeRoundAddress)
-      await this.loadRound()
-      await this.loginUser()
-    }
+    await this.$store.dispatch(SELECT_ROUND, {
+      roundIndex: roundIndex || activeRoundAddress,
+      factoryAddress:
+        factoryAddress || process.env.VUE_APP_CLRFUND_FACTORY_ADDRESS,
+    })
+    await this.loadRound()
+    await this.loginUser()
   }
 
-  // TODO: SELECT_ROUND action also commits SET_CURRENT_FACTORY_ADDRESS on this
-  // action, should be passed optionally and default to env variable
   async loadRound(): Promise<void> {
     await this.$store.dispatch(LOAD_ROUND_INFO)
     await this.$store.dispatch(LOAD_RECIPIENT_REGISTRY_INFO)
@@ -208,19 +213,18 @@ export default class App extends Vue {
     return routes.includes(this.$route.name || '')
   }
 
-  get backLinkRoute(): string {
-    const route = this.$route.name || ''
-    return route.includes('about-') ? '/about' : this.backToProjectsLink
-  }
-
-  get backToProjectsLink(): string {
+  get backLinkRoute(): string | any {
+    const factoryAddress = this.$route.params.factoryAddress
     const roundIndex = this.$route.params.roundIndex
+    const route = this.$route.name || ''
 
-    if (!roundIndex) {
-      return '/round'
+    return {
+      name: route.includes('about-') ? 'about' : 'round',
+      params: {
+        factoryAddress,
+        roundIndex,
+      },
     }
-
-    return `/round/${roundIndex}`
   }
 
   get backLinkText(): string {

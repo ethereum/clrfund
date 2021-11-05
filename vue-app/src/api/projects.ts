@@ -1,7 +1,7 @@
-import { Contract, Signer } from 'ethers'
+import { Contract, ethers, Signer } from 'ethers'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
-import { FundingRound } from './abi'
-import { factory, provider, recipientRegistryType } from './core'
+import { FundingRound, FundingRoundFactory } from './abi'
+import { provider, recipientRegistryType } from './core'
 
 import SimpleRegistry from './recipient-registry-simple'
 import OptimisticRegistry from './recipient-registry-optimistic'
@@ -33,11 +33,17 @@ export interface Project {
   extra?: any // Registry-specific data
 }
 
-//TODO: update anywhere this is called to take factory address as a parameter
 //NOTE: why isn't this included in the vuex state schema?
 export async function getRecipientRegistryAddress(
+  factoryAddress: string,
   roundAddress: string | null
 ): Promise<string> {
+  const factory = new ethers.Contract(
+    factoryAddress,
+    FundingRoundFactory,
+    provider
+  )
+
   if (roundAddress !== null) {
     const fundingRound = new Contract(roundAddress, FundingRound, provider)
     return await fundingRound.recipientRegistry()

@@ -1,5 +1,5 @@
-query GetRounds {
-  fundingRounds {
+query GetRounds($factoryAddress: String!) {
+  fundingRounds(where: { fundingRoundFactory: $factoryAddress }) {
     id
   }
 }

@@ -26,6 +26,7 @@ const state: RootState = {
   activeRoundAddress: null,
   currentRound: null,
   currentRoundAddress: null,
+  currentFactoryAddress: null,
   currentUser: null,
   recipient: null,
   recipientRegistryAddress: null,

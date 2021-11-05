@@ -112,7 +112,8 @@ export default class VerifyLanding extends Vue {
   currentRound: string | null = null
 
   async created() {
-    this.currentRound = await getCurrentRound()
+    const currentFactoryAddress = this.$store.state.currentFactoryAddress
+    this.currentRound = await getCurrentRound(currentFactoryAddress)
     this.loading = false
   }
 

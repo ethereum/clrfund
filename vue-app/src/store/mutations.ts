@@ -34,6 +34,7 @@ import {
   TOGGLE_EDIT_SELECTION,
   SET_HAS_VOTED,
   SET_ACTIVE_ROUND_ADDRESS,
+  SET_CURRENT_FACTORY_ADDRESS,
 } from './mutation-types'
 
 const mutations = {
@@ -54,7 +55,9 @@ const mutations = {
   [SET_CURRENT_USER](state, user: User | null) {
     state.currentUser = user
   },
-  //TODO: also dispatch SET_CURRENT_FACTORY_ADDRESS mutation when ever this fires
+  [SET_CURRENT_FACTORY_ADDRESS](state, address: string) {
+    state.currentFactoryAddress = address
+  },
   [SET_CURRENT_ROUND_ADDRESS](state, address: string) {
     state.currentRoundAddress = address
   },

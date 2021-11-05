@@ -9,7 +9,7 @@
   >
     <slot />
   </a>
-  <router-link v-else :to="to" :aria-label="ariaLabel">
+  <router-link v-else :to="internalToRoute" :aria-label="ariaLabel">
     <slot />
   </router-link>
 </template>
@@ -27,13 +27,34 @@ export default class extends Vue {
   @Prop() ariaLabel!: string
 
   isExternal = false
+  internalToRoute = {}
+
+  get factoryAddress(): string | undefined {
+    return this.$route.params.factoryAddress
+  }
 
   mounted() {
     if (this.href) {
       this.to = this.href
     }
+
     if (typeof this.to === 'string') {
       this.isExternal = this.to.includes('http') || this.to.includes('mailto:')
+    }
+
+    if (!this.isExternal) {
+      if (typeof this.to === 'string') {
+        this.internalToRoute = /^0x[a-fA-F0-9]{40}/.test(this.to)
+          ? this.to
+          : `/${this.factoryAddress}${this.to}`
+      }
+
+      if (typeof this.to === 'object') {
+        this.internalToRoute = {
+          ...this.to,
+          params: { ...this.to.params, factoryAddress: this.factoryAddress },
+        }
+      }
     }
   }
 }

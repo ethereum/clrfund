@@ -26,7 +26,9 @@ export default class RoundList extends Vue {
   rounds: Round[] = []
 
   async created() {
-    this.rounds = (await getRounds()).reverse()
+    const currentFactoryAddress = this.$store.state.currentFactoryAddress
+
+    this.rounds = (await getRounds(currentFactoryAddress)).reverse()
   }
 }
 </script>
