@@ -22,7 +22,7 @@
           </div>
           <p>You can now start contributing to your favorite projects.</p>
           <div class="mt2 button-spacing">
-            <links to="/projects" class="btn-primary">View projects</links>
+            <links to="/round" class="btn-primary">View projects</links>
             <links to="/" class="btn-secondary">Go home</links>
           </div>
         </div>

@@ -74,7 +74,7 @@
           <links v-if="currentUser" to="/verify/connect" class="btn-primary">
             I have BrightID installed
           </links>
-          <links to="/projects" class="btn-secondary">Go back</links>
+          <links to="/round" class="btn-secondary">Go back</links>
         </div>
       </div>
     </div>

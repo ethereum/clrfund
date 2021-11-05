@@ -35,7 +35,7 @@
         wallet on the {{ chain.label }} network
       </li>
       <li>
-        <links to="/projects">Browse projects</links> and add some to your cart,
+        <links to="/round">Browse projects</links> and add some to your cart,
         adjusting your contributions to the amount of
         {{ nativeTokenSymbol }} you want.
       </li>
@@ -75,8 +75,7 @@
       <li>
         Once you have the desired amount of {{ nativeTokenSymbol }} in your
         wallet, select "Add Funds" on the
-        <links to="/projects">Projects page</links> and confirm the
-        transactions.
+        <links to="/round">Projects page</links> and confirm the transactions.
       </li>
     </ol>
     <p></p>

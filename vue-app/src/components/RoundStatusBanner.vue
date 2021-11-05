@@ -61,7 +61,7 @@
         <span class="label"
           >Funding is closed! Contributions are ready to claim. Head to your
           project page to claim your funds.
-          <links to="/projects">View projects</links></span
+          <links to="/round">View projects</links></span
         >
       </div>
     </div>

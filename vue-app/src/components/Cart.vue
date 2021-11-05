@@ -87,7 +87,7 @@
             <div class="moon-emoji">🌚</div>
             <h3>Your cart is empty</h3>
             <div>Choose some projects that you want to contribute to...</div>
-            <links to="/projects" class="btn-secondary mobile mt1"
+            <links to="/round" class="btn-secondary mobile mt1"
               >See projects</links
             >
           </div>
