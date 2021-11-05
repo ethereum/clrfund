@@ -48,7 +48,6 @@ export async function getRecipientRegistryAddress(
     const fundingRound = new Contract(roundAddress, FundingRound, provider)
     return await fundingRound.recipientRegistry()
   } else {
-    //TODO: upgrade factory to take it's address as a parameter
     return await factory.recipientRegistry()
   }
 }

@@ -17,13 +17,6 @@ export const gunPeers: string[] = process.env.VUE_APP_GUN_PEERS
   ? process.env.VUE_APP_GUN_PEERS.split(',')
   : []
 
-//TODO: need to be able to pass the factory contract address dynamically, note all places this is used make factory address a parameter that defaults to the env. variable set
-//NOTE: these calls will be replaced by subgraph queries eventually.
-export const factory = new ethers.Contract(
-  process.env.VUE_APP_CLRFUND_FACTORY_ADDRESS as string,
-  FundingRoundFactory,
-  provider
-)
 export const userRegistryType = process.env.VUE_APP_USER_REGISTRY_TYPE
 export enum UserRegistryType {
   BRIGHT_ID = 'brightid',
