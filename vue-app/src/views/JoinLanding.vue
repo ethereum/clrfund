@@ -131,6 +131,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { DateTime } from 'luxon'
 import { BigNumber } from 'ethers'
 
@@ -143,8 +144,8 @@ import RoundStatusBanner from '@/components/RoundStatusBanner.vue'
 import TimeLeft from '@/components/TimeLeft.vue'
 import ImageResponsive from '@/components/ImageResponsive.vue'
 
-import { getCurrentRound } from '@/api/round'
 import { formatAmount } from '@/utils/amounts'
+import { RoundInfo } from '@/api/round'
 
 @Component({
   components: {
@@ -158,44 +159,45 @@ import { formatAmount } from '@/utils/amounts'
   },
 })
 export default class JoinLanding extends Vue {
-  currentRound: string | null = null
   loading = true
   showCriteriaPanel = false
 
-  async created() {
-    const currentFactoryAddress = this.$store.state.currentFactoryAddress
-    this.currentRound = await getCurrentRound(currentFactoryAddress)
-    this.loading = false
+  @Watch('currentRound')
+  finishLoading() {
+    if (this.currentRound) {
+      this.loading = false
+    }
   }
 
-  get registryInfo(): RegistryInfo {
+  get currentRound(): RoundInfo | undefined {
+    return this.$store.state.currentRound
+  }
+
+  get registryInfo(): RegistryInfo | undefined {
     return this.$store.state.recipientRegistryInfo
   }
 
-  get deposit(): BigNumber | null {
-    return this.registryInfo.deposit
+  get deposit(): BigNumber | undefined {
+    return this.registryInfo?.deposit
   }
 
-  get depositToken(): string | null {
-    return this.registryInfo.depositToken
+  get depositToken(): string | undefined {
+    return this.registryInfo?.depositToken
   }
 
-  get recipientCount(): number | null {
-    return this.registryInfo.recipientCount
+  get recipientCount(): number | undefined {
+    return this.registryInfo?.recipientCount
   }
 
-  private get signUpDeadline(): DateTime {
-    return this.$store.state.currentRound?.signUpDeadline
+  private get signUpDeadline(): DateTime | undefined {
+    return this.currentRound?.signUpDeadline
   }
 
   get spacesRemaining(): number | null {
-    if (!this.$store.state.currentRound) {
+    if (!this.currentRound || !this.registryInfo) {
       return null
     }
-    return (
-      this.$store.state.currentRound.maxRecipients -
-      this.registryInfo.recipientCount
-    )
+    return this.currentRound.maxRecipients - this.registryInfo.recipientCount
   }
 
   get isRoundFull(): boolean {
