@@ -270,7 +270,8 @@ const actions = {
   async [LOGIN_USER]({ state, dispatch }) {
     await loginUser(
       state.currentUser.walletAddress,
-      state.currentUser.encryptionKey
+      state.currentUser.encryptionKey,
+      state.currentFactoryAddress
     )
     dispatch(LOAD_BRIGHT_ID)
   },

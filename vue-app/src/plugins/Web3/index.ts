@@ -1,4 +1,3 @@
-import { LOGIN_MESSAGE } from '@/api/user'
 import { sha256 } from '@/utils/crypto'
 import { Web3Provider } from '@ethersproject/providers'
 import WalletConnectProvider from '@walletconnect/web3-provider'
@@ -34,7 +33,10 @@ export default {
       },
     })
 
-    plugin.connectWallet = async (wallet: Wallet): Promise<void> => {
+    plugin.connectWallet = async (
+      wallet: Wallet,
+      options: { loginMessage: string }
+    ): Promise<void> => {
       if (!wallet || typeof wallet !== 'string') {
         throw new Error(
           'Please provide a wallet to facilitate a web3 connection.'
@@ -52,7 +54,7 @@ export default {
 
       const signature = await conn.provider.request({
         method: 'personal_sign',
-        params: [LOGIN_MESSAGE, account],
+        params: [options.loginMessage, account],
       })
 
       // Save chosen provider to localStorage

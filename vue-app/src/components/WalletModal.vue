@@ -39,6 +39,7 @@ import Component from 'vue-class-component'
 
 // Components
 import Loader from '@/components/Loader.vue'
+import { getLoginMessage } from '@/api/user'
 
 @Component({
   components: {
@@ -53,11 +54,19 @@ export default class WalletModal extends Vue {
     return (window as any).ethereum
   }
 
+  get factoryAddress(): string | undefined {
+    return this.$route.params.factoryAddress
+  }
+
+  get loginMessage(): string {
+    return getLoginMessage(this.factoryAddress || '')
+  }
+
   async connectWallet(walletType: string) {
     this.error = ''
     this.connectingWallet = true
     try {
-      await this.$web3.connectWallet(walletType)
+      await this.$web3.connectWallet(walletType, { loginMessage: '' })
       this.$emit('close')
     } catch (error) {
       this.error = error.message
