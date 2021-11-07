@@ -45,8 +45,8 @@ export default class extends Vue {
     if (!this.isExternal) {
       if (typeof this.to === 'string') {
         this.internalToRoute = /^0x[a-fA-F0-9]{40}/.test(this.to)
-          ? this.to
-          : `/${this.factoryAddress}${this.to}`
+          ? `/${this.factoryAddress}${this.to}`
+          : this.to
       }
 
       if (typeof this.to === 'object') {
