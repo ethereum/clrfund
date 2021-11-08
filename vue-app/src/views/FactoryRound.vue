@@ -131,6 +131,11 @@ export default class FactoryRound extends Vue {
       return
     }
 
+    // If it is an old round, toggle the cart off
+    if (roundIndex !== activeRoundAddress) {
+      this.$store.commit(TOGGLE_SHOW_CART_PANEL, false)
+    }
+
     await this.$store.dispatch(SELECT_ROUND, {
       roundIndex: roundIndex || activeRoundAddress,
       factoryAddress: currentFactoryAddress,
