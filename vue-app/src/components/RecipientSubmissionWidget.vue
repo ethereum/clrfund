@@ -184,7 +184,6 @@ export default class RecipientSubmissionWidget extends Vue {
 
   private async addRecipient() {
     const {
-      currentRound,
       currentUser,
       recipient,
       recipientRegistryAddress,
@@ -204,13 +203,6 @@ export default class RecipientSubmissionWidget extends Vue {
       currentUser
     ) {
       try {
-        if (DateTime.now() >= currentRound.votingDeadline) {
-          this.$router.push({
-            name: 'join',
-          })
-          throw { message: 'round over' }
-        }
-
         await waitForTransaction(
           addRecipient(
             recipientRegistryAddress,
