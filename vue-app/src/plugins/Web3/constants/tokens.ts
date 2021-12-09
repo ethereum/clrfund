@@ -27,3 +27,9 @@ export const TOKEN_INFO: { [key: string]: Token } = {
     logo: 'matic.svg',
   },
 }
+
+export const DEFAULT_TOKEN = {
+  nativeTokenAddress: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+  nativeTokenSymbol: 'DAI',
+  nativeTokenDecimals: 18,
+}

@@ -12,6 +12,9 @@ import {
   RegistryInfo,
 } from '@/api/recipient-registry-optimistic'
 
+//  Constants
+import { DEFAULT_TOKEN } from '@/plugins/Web3/constants/tokens'
+
 // Constants
 import {
   ADD_CART_ITEM,
@@ -57,8 +60,9 @@ const mutations = {
   [SET_CURRENT_ROUND_ADDRESS](state, address: string) {
     state.currentRoundAddress = address
   },
+  // Then in SET_CURRENT_ROUND, fall back to DEFAULT_TOKEN if round is null:
   [SET_CURRENT_ROUND](state, round: RoundInfo) {
-    state.currentRound = round
+    state.currentRound = round ? round : DEFAULT_TOKEN
   },
   [SET_TALLY](state, tally: Tally) {
     state.tally = tally
