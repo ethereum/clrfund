@@ -13,11 +13,11 @@
       </a>
       <div class="help-dropdown" v-if="inApp">
         <img
-          @click="toggleHelpDropdown()"
+          @click="toggleHelpDropdown"
           class="dropdown-btn"
           src="@/assets/help.svg"
         />
-        <div id="myHelpDropdown" class="button-menu" v-if="showHelpDowndown">
+        <div id="myHelpDropdown" class="button-menu">
           <div class="dropdown-title">Help</div>
           <div
             v-for="({ to, text, emoji }, idx) of dropdownItems"
@@ -52,7 +52,6 @@ import { chain } from '@/api/core'
 })
 export default class NavBar extends Vue {
   @Prop() inApp
-  showHelpDowndown = false
   profileImageUrl: string | null = null
   dropdownItems: { to?: string; text: string; emoji: string }[] = [
     { to: '/about', text: 'About', emoji: 'ℹ️' },
@@ -76,7 +75,20 @@ export default class NavBar extends Vue {
   }
 
   toggleHelpDropdown(): void {
-    this.showHelpDowndown = !this.showHelpDowndown
+    document.getElementById('myHelpDropdown')?.classList.toggle('show')
+  }
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function (event) {
+  if (!event.target.matches('.dropdown-btn')) {
+    const dropdowns = document.getElementsByClassName('button-menu')
+    for (let i = 0; i < dropdowns.length; i++) {
+      const openDropdown = dropdowns[i]
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show')
+      }
+    }
   }
 }
 </script>
@@ -116,7 +128,7 @@ export default class NavBar extends Vue {
     margin-left: 0.5rem;
 
     .button-menu {
-      display: flex;
+      display: none;
       flex-direction: column;
       position: absolute;
       top: 2rem;
@@ -157,6 +169,10 @@ export default class NavBar extends Vue {
           color: $text-color;
         }
       }
+    }
+
+    .show {
+      display: flex;
     }
   }
 
