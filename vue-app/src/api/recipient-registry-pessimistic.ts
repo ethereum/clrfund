@@ -7,20 +7,13 @@ import { isHexString } from '@ethersproject/bytes'
 import { DateTime } from 'luxon'
 import { getEventArg } from '@/utils/contracts'
 import { getNetworkToken } from '@/utils/networks'
+import { Recipient } from '@/graphql/API'
+import sdk from '@/graphql/sdk'
 
 import { PessimisticRecipientRegistry } from './abi'
 import { provider, ipfsGatewayUrl, recipientRegistryPolicy } from './core'
+import { RecipientApplicationData, RegistryInfo } from './recipient-registry'
 import { Project } from './projects'
-import sdk from '@/graphql/sdk'
-import { Recipient } from '@/graphql/API'
-
-export interface RegistryInfo {
-  deposit: BigNumber
-  depositToken: string
-  listingPolicyUrl: string
-  recipientCount: number
-  owner: string
-}
 
 export async function getRegistryInfo(
   registryAddress: string
@@ -58,39 +51,6 @@ export enum RequestStatus {
   Rejected = 'Rejected',
   Executed = 'Live',
   Removed = 'Removed',
-}
-
-export interface RecipientApplicationData {
-  project: {
-    name: string
-    tagline: string
-    description: string
-    category: string
-    problemSpace: string
-  }
-  fund: {
-    addressName: string
-    resolvedAddress: string
-    plans: string
-  }
-  team: {
-    name: string
-    description: string
-    email: string
-  }
-  links: {
-    github: string
-    radicle: string
-    website: string
-    twitter: string
-    discord: string
-  }
-  image: {
-    bannerHash: string
-    thumbnailHash: string
-  }
-  furthestStep: number
-  hasEns: boolean
 }
 
 export function formToProjectInterface(
@@ -485,4 +445,4 @@ export async function removeProject(
   return transaction
 }
 
-export default { getProjects, getProject, registerProject }
+export default { getProjects, getProject, registerProject, getRegistryInfo }

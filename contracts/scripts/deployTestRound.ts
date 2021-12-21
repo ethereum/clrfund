@@ -314,9 +314,16 @@ async function main() {
       )
       addRecipientTx.wait()
     }
-  } else if (recipientRegistryType === 'optimistic') {
+  } else if (
+    recipientRegistryType === 'optimistic' ||
+    recipientRegistryType === 'pessimistic'
+  ) {
+    const contractRegistryName =
+      recipientRegistryType === 'optimistic'
+        ? 'OptimisticRecipientRegistry'
+        : 'PessimisticRecipientRegistry'
     const recipientRegistry = await ethers.getContractAt(
-      'OptimisticRecipientRegistry',
+      contractRegistryName,
       recipientRegistryAddress
     )
     const deposit = await recipientRegistry.baseDeposit()

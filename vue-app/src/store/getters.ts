@@ -9,14 +9,15 @@ import { RoundInfo, RoundStatus } from '@/api/round'
 import { Tally } from '@/api/tally'
 import { User } from '@/api/user'
 import { Factory } from '@/api/factory'
-import {
-  RecipientApplicationData,
-  RegistryInfo,
-} from '@/api/recipient-registry-optimistic'
+import { OptimisticRegistryInfo } from '@/api/recipient-registry-optimistic'
 
 // Utils
 import { isSameAddress } from '@/utils/accounts'
 import { getSecondsFromNow, hasDateElapsed } from '@/utils/dates'
+import {
+  RecipientApplicationData,
+  RegistryInfo,
+} from '@/api/recipient-registry'
 
 export interface RootState {
   cart: CartItem[]
@@ -44,7 +45,8 @@ const getters = {
 
     const challengePeriodDuration =
       recipientRegistryType === 'optimistic'
-        ? state.recipientRegistryInfo.challengePeriodDuration
+        ? (state.recipientRegistryInfo as OptimisticRegistryInfo)
+            .challengePeriodDuration
         : 0
 
     return state.currentRound.signUpDeadline.minus({

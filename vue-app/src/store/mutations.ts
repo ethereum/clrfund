@@ -11,7 +11,7 @@ import { Factory } from '@/api/factory'
 import {
   RecipientApplicationData,
   RegistryInfo,
-} from '@/api/recipient-registry-optimistic'
+} from '@/api/recipient-registry'
 
 // Constants
 import {

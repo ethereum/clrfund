@@ -750,10 +750,8 @@ import Warning from '@/components/Warning.vue'
 import Links from '@/components/Links.vue'
 
 import { SET_RECIPIENT_DATA } from '@/store/mutation-types'
-import {
-  RecipientApplicationData,
-  formToProjectInterface,
-} from '@/api/recipient-registry-optimistic'
+import { formToProjectInterface } from '@/api/recipient-registry-optimistic'
+import { RecipientApplicationData } from '@/api/recipient-registry'
 import { Project } from '@/api/projects'
 import { chain } from '@/api/core'
 

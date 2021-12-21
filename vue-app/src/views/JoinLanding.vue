@@ -138,7 +138,7 @@ import Component from 'vue-class-component'
 import { DateTime } from 'luxon'
 import { BigNumber } from 'ethers'
 
-import { RegistryInfo } from '@/api/recipient-registry-optimistic'
+import { RegistryInfo } from '@/api/recipient-registry'
 import Loader from '@/components/Loader.vue'
 import CriteriaModal from '@/components/CriteriaModal.vue'
 import BackLink from '@/components/BackLink.vue'

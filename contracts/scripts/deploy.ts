@@ -76,6 +76,15 @@ async function main() {
       0,
       fundingRoundFactory.address
     )
+  } else if (recipientRegistryType === 'pessimistic') {
+    const PessimisticRecipientRegistry = await ethers.getContractFactory(
+      'PessimisticRecipientRegistry',
+      deployer
+    )
+    recipientRegistry = await PessimisticRecipientRegistry.deploy(
+      UNIT.div(1000),
+      fundingRoundFactory.address
+    )
   } else {
     throw new Error('unsupported recipient registry type')
   }

@@ -49,8 +49,9 @@ import Warning from '@/components/Warning.vue'
 import Links from '@/components/Links.vue'
 import ImageResponsive from '@/components/ImageResponsive.vue'
 
-import { RegistryInfo } from '@/api/recipient-registry-optimistic'
-import { chain } from '@/api/core'
+import { RegistryInfo } from '@/api/recipient-registry'
+import { chain, recipientRegistryType } from '@/api/core'
+import { OptimisticRegistryInfo } from '@/api/recipient-registry-optimistic'
 
 @Component({
   components: {
@@ -66,7 +67,11 @@ export default class ProjectAdded extends Vue {
   challengePeriodDuration: number | null = null
 
   async created() {
-    this.challengePeriodDuration = this.registryInfo.challengePeriodDuration
+    if (recipientRegistryType === 'optimistic') {
+      this.challengePeriodDuration = (
+        this.registryInfo as OptimisticRegistryInfo
+      ).challengePeriodDuration
+    }
   }
 
   get registryInfo(): RegistryInfo {
