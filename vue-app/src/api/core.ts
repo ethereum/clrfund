@@ -38,7 +38,9 @@ if (
 }
 export const recipientRegistryType = process.env.VUE_APP_RECIPIENT_REGISTRY_TYPE
 if (
-  !['simple', 'optimistic', 'kleros'].includes(recipientRegistryType as string)
+  !['simple', 'optimistic', 'pessimistic', 'kleros'].includes(
+    recipientRegistryType as string
+  )
 ) {
   throw new Error('invalid recipient registry type')
 }

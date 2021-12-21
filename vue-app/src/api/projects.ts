@@ -5,6 +5,7 @@ import { factory, provider, recipientRegistryType } from './core'
 
 import SimpleRegistry from './recipient-registry-simple'
 import OptimisticRegistry from './recipient-registry-optimistic'
+import PessimisticRegistry from './recipient-registry-pessimistic'
 import KlerosRegistry from './recipient-registry-kleros'
 
 export interface Project {
@@ -60,6 +61,12 @@ export async function getProjects(
       startTime,
       endTime
     )
+  } else if (recipientRegistryType === 'pessimistic') {
+    return await PessimisticRegistry.getProjects(
+      registryAddress,
+      startTime,
+      endTime
+    )
   } else if (recipientRegistryType === 'kleros') {
     return await KlerosRegistry.getProjects(registryAddress, startTime, endTime)
   } else {
@@ -75,6 +82,8 @@ export async function getProject(
     return await SimpleRegistry.getProject(registryAddress, recipientId)
   } else if (recipientRegistryType === 'optimistic') {
     return await OptimisticRegistry.getProject(recipientId)
+  } else if (recipientRegistryType === 'pessimistic') {
+    return await PessimisticRegistry.getProject(recipientId)
   } else if (recipientRegistryType === 'kleros') {
     return await KlerosRegistry.getProject(registryAddress, recipientId)
   } else {
@@ -89,6 +98,12 @@ export async function registerProject(
 ): Promise<TransactionResponse> {
   if (recipientRegistryType === 'optimistic') {
     return await OptimisticRegistry.registerProject(
+      registryAddress,
+      recipientId,
+      signer
+    )
+  } else if (recipientRegistryType === 'pessimistic') {
+    return await PessimisticRegistry.registerProject(
       registryAddress,
       recipientId,
       signer
