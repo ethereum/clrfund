@@ -34,6 +34,22 @@ export class OptimisticRecipientRegistry extends DataSourceTemplate {
   }
 }
 
+export class PessimisticRecipientRegistry extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("PessimisticRecipientRegistry", [
+      address.toHex()
+    ]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "PessimisticRecipientRegistry",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
 export class BrightIdUserRegistry extends DataSourceTemplate {
   static create(address: Address): void {
     DataSourceTemplate.create("BrightIdUserRegistry", [address.toHex()]);

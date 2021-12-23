@@ -29,6 +29,8 @@ dataSources:
           file: ./abis/MACIFactory.json
         - name: OptimisticRecipientRegistry
           file: ./abis/OptimisticRecipientRegistry.json
+        - name: PessimisticRecipientRegistry
+          file: ./abis/PessimisticRecipientRegistry.json
         - name: BrightIdUserRegistry
           file: ./abis/BrightIdUserRegistry.json
       eventHandlers:
@@ -71,6 +73,30 @@ dataSources:
         - event: RequestSubmitted(indexed bytes32,indexed uint8,address,string,uint256)
           handler: handleRequestSubmitted
       file: ./src/OptimisticRecipientRegistryMapping.ts
+  - kind: ethereum/contract
+    name: PessimisticRecipientRegistry
+    network: {{network}}
+    source:
+      abi: PessimisticRecipientRegistry
+      startBlock: {{recipientRegistryStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - RecipientRegistry
+        - Recipient
+      abis:
+        - name: PessimisticRecipientRegistry
+          file: ./abis/PessimisticRecipientRegistry.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RequestResolved(indexed bytes32,indexed uint8,indexed bool,uint256,uint256)
+          handler: handleRequestResolved
+        - event: RequestSubmitted(indexed bytes32,indexed uint8,address,string,uint256)
+          handler: handleRequestSubmitted
+      file: ./src/PessimisticRecipientRegistryMapping.ts
 templates:
   - name: FundingRound
     kind: ethereum/contract
@@ -131,6 +157,29 @@ templates:
         - event: RequestSubmitted(indexed bytes32,indexed uint8,address,string,uint256)
           handler: handleRequestSubmitted
       file: ./src/OptimisticRecipientRegistryMapping.ts
+  - name: PessimisticRecipientRegistry
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: PessimisticRecipientRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - RecipientRegistry
+        - Recipient
+      abis:
+        - name: PessimisticRecipientRegistry
+          file: ./abis/PessimisticRecipientRegistry.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RequestResolved(indexed bytes32,indexed uint8,indexed bool,uint256,uint256)
+          handler: handleRequestResolved
+        - event: RequestSubmitted(indexed bytes32,indexed uint8,address,string,uint256)
+          handler: handleRequestSubmitted
+      file: ./src/PessimisticRecipientRegistryMapping.ts
   - name: BrightIdUserRegistry
     kind: ethereum/contract
     network: {{network}}

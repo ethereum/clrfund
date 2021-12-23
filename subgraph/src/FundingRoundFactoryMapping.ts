@@ -13,11 +13,13 @@ import {
 import { MACIFactory as MACIFactoryContract } from '../generated/FundingRoundFactory/MACIFactory'
 import { FundingRound as FundingRoundContract } from '../generated/FundingRoundFactory/FundingRound'
 
-import { OptimisticRecipientRegistry as RecipientRegistryContract } from '../generated/FundingRoundFactory/OptimisticRecipientRegistry'
+import { OptimisticRecipientRegistry } from '../generated/FundingRoundFactory/OptimisticRecipientRegistry'
+import { PessimisticRecipientRegistry } from '../generated/FundingRoundFactory/PessimisticRecipientRegistry'
 
 import {
   FundingRound as FundingRoundTemplate,
-  OptimisticRecipientRegistry as recipientRegistryTemplate,
+  OptimisticRecipientRegistry as optimisticRecipientRegistryTemplate,
+  PessimisticRecipientRegistry as pessimisticRecipientRegistryTemplate,
   MACI as MACITemplate,
 } from '../generated/templates'
 import {
