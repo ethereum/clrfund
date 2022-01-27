@@ -74,7 +74,8 @@ describe('End-to-end Tests', function () {
       deployer,
       'QuadVoteTallyVerifier32'
     )
-    const maciFactory = await deployMaciFactory(deployer, 'x32', {
+    const circuit = 'prod'
+    const maciFactory = await deployMaciFactory(deployer, circuit, {
       poseidonT3,
       poseidonT6,
       batchUstVerifier,
