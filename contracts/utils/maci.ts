@@ -64,8 +64,8 @@ export class ProdMaciParameters {
   stateTreeDepth = 32
   messageTreeDepth = 32
   voteOptionTreeDepth = 3
-  tallyBatchSize = 64
-  messageBatchSize = 64
+  tallyBatchSize = 128
+  messageBatchSize = 128
   batchUstVerifier!: string
   qvtVerifier!: string
   signUpDuration = 7 * 86400
