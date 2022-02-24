@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { Wallet } from 'ethers'
 import { ethers } from 'hardhat'
 import { Keypair } from 'maci-domainobjs'
 
@@ -6,8 +7,26 @@ import { UNIT } from '../utils/constants'
 import { getEventArg } from '../utils/contracts'
 
 async function main() {
-  const [, , , , , , , , , , , , contributor1, contributor2] =
-    await ethers.getSigners()
+  // const [, , , , , , , , , , , , contributor1, contributor2, contributor3] =
+  //   await ethers.getSigners()
+
+  const contributor1 = new Wallet(
+    process.env.CONTRIBUTOR_PK_1!,
+    ethers.provider
+  )
+  const contributor2 = new Wallet(
+    process.env.CONTRIBUTOR_PK_2!,
+    ethers.provider
+  )
+  const contributor3 = new Wallet(
+    process.env.CONTRIBUTOR_PK_3!,
+    ethers.provider
+  )
+  const contributor4 = new Wallet(
+    process.env.CONTRIBUTOR_PK_4!,
+    ethers.provider
+  )
+
   const state = JSON.parse(fs.readFileSync('state.json').toString())
   const fundingRound = await ethers.getContractAt(
     'FundingRound',
@@ -21,7 +40,12 @@ async function main() {
   const contributionAmount = UNIT.mul(16).div(10)
   state.contributors = {}
 
-  for (const contributor of [contributor1, contributor2]) {
+  for (const contributor of [
+    contributor1,
+    contributor2,
+    contributor3,
+    contributor4,
+  ]) {
     const contributorAddress = await contributor.getAddress()
     const contributorKeypair = new Keypair()
     const tokenAsContributor = token.connect(contributor)

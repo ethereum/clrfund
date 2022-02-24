@@ -1,19 +1,42 @@
 import fs from 'fs'
 import { ethers } from 'hardhat'
-import { BigNumber } from 'ethers'
+import { BigNumber, Wallet } from 'ethers'
 import { PrivKey, Keypair } from 'maci-domainobjs'
 
 import { createMessage } from '../utils/maci'
 
 async function main() {
-  const [, , , , , , , , , , , , contributor1, contributor2] =
-    await ethers.getSigners()
+  // const [, , , , , , , , , , , , contributor1, contributor2, contributor3] =
+  //   await ethers.getSigners()
+
+  const contributor1 = new Wallet(
+    process.env.CONTRIBUTOR_PK_1!,
+    ethers.provider
+  )
+  const contributor2 = new Wallet(
+    process.env.CONTRIBUTOR_PK_2!,
+    ethers.provider
+  )
+  const contributor3 = new Wallet(
+    process.env.CONTRIBUTOR_PK_3!,
+    ethers.provider
+  )
+  const contributor4 = new Wallet(
+    process.env.CONTRIBUTOR_PK_4!,
+    ethers.provider
+  )
+
   const state = JSON.parse(fs.readFileSync('state.json').toString())
   const coordinatorKeyPair = new Keypair(
     PrivKey.unserialize(state.coordinatorPrivKey)
   )
 
-  for (const contributor of [contributor1, contributor2]) {
+  for (const contributor of [
+    contributor1,
+    contributor2,
+    contributor3,
+    contributor4,
+  ]) {
     const contributorAddress = await contributor.getAddress()
     const contributorData = state.contributors[contributorAddress]
     const contributorKeyPair = new Keypair(
@@ -37,8 +60,11 @@ async function main() {
     encPubKeys.push(encPubKey.asContractParam())
     nonce += 1
     // Vote
-    for (const recipientIndex of [1, 2]) {
-      const votes = BigNumber.from(contributorData.voiceCredits).div(4)
+    const recipients = [1, 2, 3, 4, 5, 6, 7]
+    for (const recipientIndex of recipients) {
+      const votes = BigNumber.from(contributorData.voiceCredits).div(
+        recipients.length
+      )
       const [message, encPubKey] = createMessage(
         contributorData.stateIndex,
         newContributorKeypair,
@@ -58,10 +84,21 @@ async function main() {
       state.fundingRound,
       contributor
     )
-    await fundingRoundAsContributor.submitMessageBatch(
+
+    const tx = await fundingRoundAsContributor.submitMessageBatch(
       messages.reverse(),
-      encPubKeys.reverse()
+      encPubKeys.reverse(),
+      {
+        gasLimit: 20000000,
+      }
     )
+    try {
+      await tx.wait()
+    } catch (err) {
+      console.log('error!', err)
+      return
+    }
+
     console.log(`Contributor ${contributorAddress} voted.`)
   }
 }

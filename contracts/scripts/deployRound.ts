@@ -40,6 +40,18 @@ async function main() {
       deployer
     )
     userRegistry = await SimpleUserRegistry.deploy()
+
+    const users = [
+      '0x63bb006f4E87Ce48dC62f440d14a114718302db7',
+      '0xf75E7D74F0C425457E6389e152AEf6241aC62E0e',
+      '0xa70bd8D67A222F8D8E0D15999A87666da0406Fe4',
+      '0x03C6464805102E497EA695e8b0423Ae36e5Df240',
+    ]
+    let addUserTx
+    for (const account of users) {
+      addUserTx = await userRegistry.addUser(account)
+      addUserTx.wait()
+    }
   } else if (userRegistryType === 'brightid') {
     const BrightIdUserRegistry = await ethers.getContractFactory(
       'BrightIdUserRegistry',
@@ -112,8 +124,8 @@ async function main() {
   maciFactory = await ethers.getContractAt('MACIFactory', maciFactory.address)
   const maciParameters = await MaciParameters.read(maciFactory)
   maciParameters.update({
-    signUpDuration: 86400 * 14,
-    votingDuration: 86400 * 3,
+    signUpDuration: 60 * 30,
+    votingDuration: 60 * 1,
   })
   const setMaciParametersTx = await fundingRoundFactory.setMaciParameters(
     ...maciParameters.values()
@@ -184,52 +196,50 @@ async function main() {
     }
   } else if (recipientRegistryType === 'optimistic') {
     const deposit = await recipientRegistry.baseDeposit()
-    const recipient1Added = await recipientRegistry.addRecipient(
-      deployer.address,
-      JSON.stringify(metadataRecipient1),
-      { value: deposit }
-    )
-    await recipient1Added.wait()
 
-    const recipient1Id = await getEventArg(
-      recipient1Added,
-      recipientRegistry,
-      'RequestSubmitted',
-      '_recipientId'
-    )
-    const executeRequest1 = await recipientRegistry.executeRequest(recipient1Id)
-    await executeRequest1.wait()
+    const recipientsNumber = 10
+    for (
+      let recipientsIndex = 0;
+      recipientsIndex < recipientsNumber;
+      recipientsIndex++
+    ) {
+      const metadata = {
+        ...metadataRecipient1,
+        description: `${metadataRecipient1.description}${recipientsIndex}`,
+      }
+      const recipient3Added = await recipientRegistry.addRecipient(
+        deployer.getAddress(),
+        JSON.stringify(metadata),
+        { value: deposit }
+      )
+      recipient3Added.wait()
 
-    const recipient2Added = await recipientRegistry.addRecipient(
-      deployer.address,
-      JSON.stringify(metadataRecipient2),
-      { value: deposit }
-    )
-    await recipient2Added.wait()
-
-    const recipient2Id = await getEventArg(
-      recipient2Added,
-      recipientRegistry,
-      'RequestSubmitted',
-      '_recipientId'
-    )
-    const executeRequest2 = await recipientRegistry.executeRequest(recipient2Id)
-    await executeRequest2.wait()
-
-    const fundingRoundAddress = await fundingRoundFactory.getCurrentRound()
-    console.log('fundingRound.address: ', fundingRoundAddress)
-
-    const fundingRound = await ethers.getContractAt(
-      'FundingRound',
-      fundingRoundAddress
-    )
-    const maciAddress = await fundingRound.maci()
-    console.log('maci.address: ', maciAddress)
-
-    console.log('*******************')
-    console.log('Deploy complete!')
-    console.log('*******************')
+      const recipient3Id = await getEventArg(
+        recipient3Added,
+        recipientRegistry,
+        'RequestSubmitted',
+        '_recipientId'
+      )
+      const executeRequest3 = await recipientRegistry.executeRequest(
+        recipient3Id
+      )
+      await executeRequest3.wait()
+    }
   }
+
+  const fundingRoundAddress = await fundingRoundFactory.getCurrentRound()
+  console.log('fundingRound.address: ', fundingRoundAddress)
+
+  const fundingRound = await ethers.getContractAt(
+    'FundingRound',
+    fundingRoundAddress
+  )
+  const maciAddress = await fundingRound.maci()
+  console.log('maci.address: ', maciAddress)
+
+  console.log('*******************')
+  console.log('Deploy complete!')
+  console.log('*******************')
 }
 
 main()
