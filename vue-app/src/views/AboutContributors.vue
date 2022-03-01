@@ -101,6 +101,7 @@ import { ChainInfo } from '@/plugins/Web3/constants/chains'
 
 @Component({ components: { Links } })
 export default class AboutContributors extends Vue {
+  // TODO: update to new getter
   get nativeTokenSymbol(): string {
     return this.$store.getters.nativeTokenSymbol
   }
