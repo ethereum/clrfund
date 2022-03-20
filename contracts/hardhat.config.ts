@@ -42,7 +42,7 @@ const config: HardhatUserConfig = {
       url: process.env.JSONRPC_HTTP_URL || 'http://127.0.0.1:8545',
       accounts,
     },
-    xdai: {
+    gnosis: {
       url: process.env.JSONRPC_HTTP_URL || 'https://rpc.xdaichain.com',
       timeout: 60000,
       accounts,

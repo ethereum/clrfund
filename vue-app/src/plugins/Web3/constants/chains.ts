@@ -5,7 +5,7 @@ export enum ChainId {
   ARBITRUM_ONE = 42161,
   ARBITRUM_RINKEBY = 421611,
   OPTIMISM = 10,
-  XDAI = 100,
+  GNOSIS = 100,
   POLYGON = 137,
 }
 
@@ -86,15 +86,15 @@ export const CHAIN_INFO: ChainInfo = {
     rpcUrl: 'https://mainnet.optimism.io',
     bridge: 'https://gateway.optimism.io',
   },
-  [ChainId.XDAI]: {
-    label: 'xDai',
+  [ChainId.GNOSIS]: {
+    label: 'Gnosis Chain',
     currency: 'xDai',
     logo: 'xdai.svg',
     isLayer2: false,
-    explorer: 'https://blockscout.com/poa/xdai',
-    explorerLogo: 'xdai-explorer.svg',
+    explorer: 'https://blockscout.com/xdai/mainnet/',
+    explorerLogo: 'gnosis-chain.svg',
     explorerLabel: 'Blockscout',
-    rpcUrl: 'https://rpc.xdaichain.com/',
+    rpcUrl: 'https://rpc.xdaichain.com',
     bridge: 'https://bridge.xdaichain.com',
   },
   [ChainId.POLYGON]: {

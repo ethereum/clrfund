@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: FundingRoundFactory
-    network: xdai
+    network: gnosis
     source:
       address: '0x549F91A93c94358C5f5380D7ABF23E1340CfF2db'
       abi: FundingRoundFactory
@@ -52,7 +52,7 @@ dataSources:
       file: ./src/FundingRoundFactoryMapping.ts
   - kind: ethereum/contract
     name: OptimisticRecipientRegistry
-    network: xdai
+    network: gnosis
     source:
       abi: OptimisticRecipientRegistry
       startBlock: 15217676
@@ -77,7 +77,7 @@ dataSources:
 templates:
   - name: FundingRound
     kind: ethereum/contract
-    network: xdai
+    network: gnosis
     source:
       abi: FundingRound
     mapping:
@@ -113,7 +113,7 @@ templates:
       file: ./src/FundingRoundMapping.ts
   - name: OptimisticRecipientRegistry
     kind: ethereum/contract
-    network: xdai
+    network: gnosis
     source:
       abi: OptimisticRecipientRegistry
     mapping:
@@ -136,7 +136,7 @@ templates:
       file: ./src/OptimisticRecipientRegistryMapping.ts
   - name: BrightIdUserRegistry
     kind: ethereum/contract
-    network: xdai
+    network: gnosis
     source:
       abi: BrightIdUserRegistry
     mapping:
@@ -159,7 +159,7 @@ templates:
       file: ./src/BrightIdUserRegistryMapping.ts
   - name: MACI
     kind: ethereum/contract
-    network: xdai
+    network: gnosis
     source:
       abi: MACI
     mapping:
