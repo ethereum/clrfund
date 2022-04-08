@@ -22,6 +22,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 pragma solidity ^0.6.12;
 import './MACIFactory.sol';
 import './ClrFund.sol';
+import './recipientRegistry/OptimisticRecipientRegistry.sol';
+import './userRegistry/BrightIdUserRegistry.sol';
 
 contract CloneFactory { // implementation of eip-1167 - see https://eips.ethereum.org/EIPS/eip-1167
     function createClone(address target) internal returns (address result) {
@@ -40,16 +42,26 @@ contract ClrFundDeployer is CloneFactory {
     
     address public template;
     mapping (address => bool) public clrfunds;
-    uint clrId = 0;
-    ClrFund private clrfund; // funding factory contract
+    mapping (address => bool) public recipientRegistries;
+    mapping (address => bool) public userRegistries;
     
+    uint clrId = 0;
+    uint recipientRegistryId = 0;
+    uint userId = 0;
+
+    ClrFund private clrfund; // funding factory contract
+    OptimisticRecipientRegistry private recipientRegistry; // recipient registry contract
+    BrightIdUserRegistry private userRegistry; // user registry contract
+
     constructor(address _template) public {
         template = _template;
     }
     
     event NewInstance(address indexed clrfund);
-    event Register(address indexed clrfund, string metadata);
-     
+    event RegisterFund(address indexed clrfund, string metadata);
+    event RegisterOptimisticRecipientRegistry(address indexed recipientRegistry, string metadata);
+    event RegisterBrightIdUserRegistry(address indexed userRegistry, string metadata);
+
     function deployFund(
       MACIFactory _maciFactory
     ) public returns (address) {
@@ -64,7 +76,7 @@ contract ClrFundDeployer is CloneFactory {
         return address(clrfund);
     }
     
-    function registerInstance(
+    function registerFundInstance(
         address _clrFundAddress,
         string memory _metadata
       ) public returns (bool) {
@@ -76,7 +88,41 @@ contract ClrFundDeployer is CloneFactory {
       clrfunds[_clrFundAddress] = true;
       
       clrId = clrId + 1;
-      emit Register(_clrFundAddress, _metadata);
+      emit RegisterFund(_clrFundAddress, _metadata);
+      return true;
+      
+    }
+    
+    function registerRecipientRegistryInstance(
+        address _recipientRegistryAddress,
+        string memory _metadata
+      ) public returns (bool) {
+          
+      recipientRegistry = OptimisticRecipientRegistry(_recipientRegistryAddress);
+      
+      require(recipientRegistries[_recipientRegistryAddress] == false, 'RecipientRegistry: metadata already registered');
+
+      recipientRegistries[_recipientRegistryAddress] = true;
+      
+      recipientRegistryId = recipientRegistryId + 1;
+      emit RegisterOptimisticRecipientRegistry(_recipientRegistryAddress, _metadata);
+      return true;
+      
+    }
+    
+    function registerUserRegistryInstance(
+        address _userRegistryAddress,
+        string memory _metadata
+      ) public returns (bool) {
+          
+      userRegistry = BrightIdUserRegistry(_userRegistryAddress);
+      
+      require(userRegistries[_userRegistryAddress] == false, 'UserRegistry: metadata already registered');
+
+      userRegistries[_userRegistryAddress] = true;
+      
+      userId = userId + 1;
+      emit RegisterBrightIdUserRegistry(_userRegistryAddress, _metadata);
       return true;
       
     }

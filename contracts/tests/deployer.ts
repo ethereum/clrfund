@@ -87,26 +87,61 @@ describe('Clr fund deployer', () => {
 
   it('can register with the subgraph', async () => {
     await expect(
-      clrFundDeployer.registerInstance(
+      clrFundDeployer.registerFundInstance(
         factory.address,
         '{name:dead,title:beef}'
       )
     )
-      .to.emit(clrFundDeployer, 'Register')
+      .to.emit(clrFundDeployer, 'RegisterFund')
+      .withArgs(factory.address, '{name:dead,title:beef}')
+  })
+  //TODO: Test Optimistic Recipient Registry subgraph registration event is idempotent
+  it('can register Optimistic Recipient Registries with the subgraph', async () => {
+    await expect(
+      clrFundDeployer.registerRecipientRegistryInstance(
+        recipientRegistry.address,
+        '{name:dead,title:beef}'
+      )
+    )
+      .to.emit(clrFundDeployer, 'RegisterOptimisticRecipientRegistry')
+      .withArgs(recipientRegistry.address, '{name:dead,title:beef}')
+  })
+
+  //TODO: Test Bright ID User Registry subgraph registration event is idempotent
+  it('can register BrightId User Registries with the subgraph', async () => {
+    await expect(
+      clrFundDeployer.registerUserRegistryInstance(
+        userRegistry.address,
+        '{name:dead,title:beef}'
+      )
+    )
+      .to.emit(clrFundDeployer, 'RegisterBrightIdUserRegistry')
+      .withArgs(userRegistry.address, '{name:dead,title:beef}')
+  })
+
+  //TODO: Test brightId subgraph registration
+  it('can register fun instances with the subgraph', async () => {
+    await expect(
+      clrFundDeployer.registerFundInstance(
+        factory.address,
+        '{name:dead,title:beef}'
+      )
+    )
+      .to.emit(clrFundDeployer, 'RegisterFund')
       .withArgs(factory.address, '{name:dead,title:beef}')
   })
 
   it('cannot register with the subgraph twice', async () => {
     await expect(
-      clrFundDeployer.registerInstance(
+      clrFundDeployer.registerFundInstance(
         factory.address,
         '{name:dead,title:beef}'
       )
     )
-      .to.emit(clrFundDeployer, 'Register')
+      .to.emit(clrFundDeployer, 'RegisterFund')
       .withArgs(factory.address, '{name:dead,title:beef}')
     await expect(
-      clrFundDeployer.registerInstance(
+      clrFundDeployer.registerFundInstance(
         factory.address,
         '{name:dead,title:beef}'
       )
